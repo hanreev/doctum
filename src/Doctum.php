@@ -48,6 +48,7 @@ use Wdes\phpI18nL10n\Launcher;
 /**
  * @implements \ArrayAccess<string,mixed>
  */
+#[\AllowDynamicProperties]
 class Doctum implements ArrayAccess
 {
     public const VERSION_MAJOR = 5;
