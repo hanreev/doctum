@@ -32,6 +32,7 @@ class DocBlockParserTest extends TestCase
     /**
      * @dataProvider getParseTests
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getParseTests')]
     public function testParse(string $comment, array $expected): void
     {
         $parser   = new DocBlockParser();
@@ -42,6 +43,7 @@ class DocBlockParserTest extends TestCase
     /**
      * @dataProvider getParseTests
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getParseTests')]
     public function testParseWithNamespace(string $comment, array $expected): void
     {
         $parser   = new DocBlockParser();
@@ -52,6 +54,7 @@ class DocBlockParserTest extends TestCase
     /**
      * @dataProvider getParseTests
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getParseTests')]
     public function testParseWithAliases(string $comment, array $expected): void
     {
         $parser   = new DocBlockParser();
@@ -65,7 +68,7 @@ class DocBlockParserTest extends TestCase
         );
     }
 
-    public function getParseTests(): array
+    public static function getParseTests(): array
     {
         return [
             [
@@ -649,9 +652,6 @@ class DocBlockParserTest extends TestCase
                 $value = [$value];
             }
             foreach ($value as $v) {
-                if (($tag === 'covers' || $tag === 'version') && PHP_MAJOR_VERSION === 7 && PHP_MINOR_VERSION === 1) {
-                    $v = $v . ' ';
-                }
                 $docblock->addTag($tag, $v);
             }
         }

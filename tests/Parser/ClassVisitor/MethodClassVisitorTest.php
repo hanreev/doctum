@@ -23,7 +23,7 @@ class MethodClassVisitorTest extends TestCase
     public function testAddsMethods(): void
     {
         $class    = $this->getMockBuilder(ClassReflection::class)
-            ->setMethods(['getTags'])
+            ->onlyMethods(['getTags'])
             ->setConstructorArgs(['Mock', 1])
             ->getMock();
         $property = [
@@ -32,7 +32,7 @@ class MethodClassVisitorTest extends TestCase
         $class->expects($this->any())
             ->method('getTags')
             ->with($this->equalTo('method'))
-            ->will($this->returnValue($property));
+            ->willReturn($property);
 
         $visitor = new MethodClassVisitor();
         /** @var ClassReflection $class */

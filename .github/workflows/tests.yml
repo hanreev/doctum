@@ -13,15 +13,16 @@ jobs:
         runs-on: ${{ matrix.os }}
         continue-on-error: ${{ matrix.experimental }}
         strategy:
+            fail-fast: false
             matrix:
-                php-version: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2"]
+                php-version: ["8.1", "8.2", "8.3", "8.4"]
                 os: [ubuntu-latest]
                 experimental: [false]
-                composer-options: ['']
+                composer-options: ['', '--prefer-lowest']
                 include:
                     - { php-version: 'nightly', experimental: true, os: ubuntu-latest, composer-options: '--ignore-platform-reqs' }
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Use php ${{ matrix.php-version }}
               uses: shivammathur/setup-php@v2
               with:
@@ -31,18 +32,20 @@ jobs:
               id: composer-cache
               run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
             - name: Restore cache
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                 path: ${{ steps.composer-cache.outputs.dir }}
                 key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
                 restore-keys: |
                   ${{ runner.os }}-composer-
             - name: Install dependencies
-              run: composer install --no-interaction ${{ matrix.composer-options }}
+              run: composer update --no-interaction ${{ matrix.composer-options }}
             - name: Run php tests
               run: composer run phpunit
             - name: Send coverage
-              uses: codecov/codecov-action@v3
+              uses: codecov/codecov-action@v4
+              with:
+                token: ${{ secrets.CODECOV_TOKEN }}
 
     test-phar:
         name: Run command line tests on the phar with php ${{ matrix.php-version }} on ${{ matrix.os }}
@@ -51,28 +54,29 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php-version: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2"]
+                php-version: ["8.1", "8.2", "8.3", "8.4"]
                 os: [ubuntu-latest]
                 experimental: [false]
-                composer-options: ['']
+                composer-options: ['', '--prefer-lowest']
                 include:
                     - { php-version: 'nightly', experimental: true, os: ubuntu-latest, composer-options: '--ignore-platform-reqs' }
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Use php ${{ matrix.php-version }}
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php-version }}
             - name: Cache module
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
-                  path: ~/v2.1.8.tar.gz
+                  path: ~/shunit2_2.1.8-4_all.deb
                   key: shunit2-cache
             - name: Setup shunit 2
-              run: ./tests/phar/install-tests.sh
+              run: |
+                wget http://ftp.debian.org/debian/pool/main/s/shunit2/shunit2_2.1.8-4_all.deb -O ~/shunit2_2.1.8-4.deb
+                sudo apt install -y ~/shunit2_2.1.8-4.deb
             - name: Run phar tests
               run: |
-                export PATH="$PATH:$HOME/shunit2-2.1.8/"
                 COMPOSER_BIN="/bin/composer" COMPOSER_OPTIONS="${{ matrix.composer-options }}" ./tests/phar/tests.sh
 
     test-resume-from-parse:
@@ -82,14 +86,14 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php-version: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2"]
+                php-version: ["8.1", "8.2", "8.3", "8.4"]
                 os: [ubuntu-latest]
                 experimental: [false]
-                composer-options: ['']
+                composer-options: ['', '--prefer-lowest']
                 include:
                     - { php-version: 'nightly', experimental: true, os: ubuntu-latest, composer-options: '--ignore-platform-reqs' }
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Use php ${{ matrix.php-version }}
               uses: shivammathur/setup-php@v2
               with:
@@ -98,14 +102,14 @@ jobs:
               id: composer-cache
               run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
             - name: Restore cache
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                 path: ${{ steps.composer-cache.outputs.dir }}
                 key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
                 restore-keys: |
                   ${{ runner.os }}-composer-
             - name: Install dependencies
-              run: composer install --no-interaction ${{ matrix.composer-options }}
+              run: composer update --no-interaction ${{ matrix.composer-options }}
             - name: Run resume from parse diff tests
               run: ./tests/resume-from-parse-test.sh
 
@@ -116,14 +120,14 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php-version: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2"]
+                php-version: ["8.1", "8.2", "8.3", "8.4"]
                 os: [ubuntu-latest]
                 experimental: [false]
-                composer-options: ['']
+                composer-options: ['', '--prefer-lowest']
                 include:
                     - { php-version: 'nightly', experimental: true, os: ubuntu-latest, composer-options: '--ignore-platform-reqs' }
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Use php ${{ matrix.php-version }}
               uses: shivammathur/setup-php@v2
               with:
@@ -132,7 +136,7 @@ jobs:
               id: composer-cache
               run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
             - name: Restore cache
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                 path: ${{ steps.composer-cache.outputs.dir }}
                 key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}

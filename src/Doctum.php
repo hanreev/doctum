@@ -196,6 +196,8 @@ class Doctum implements ArrayAccess
     private $base_url = null;
     /** @var string|null */
     private $favicon = null;
+    /** @var string */
+    private $language = 'en';
 
     /**
      * @var array<string,string>|null
@@ -363,7 +365,7 @@ class Doctum implements ArrayAccess
     private function getLanguageFromConfig(): string
     {
         /** @var string $language */
-        $language = $this->config['language'] ?? 'en';
+        $language = $this->config['language'] ?? $this->language;
         return $language;
     }
 
@@ -522,7 +524,7 @@ class Doctum implements ArrayAccess
 
     private function getPhpParser(): PhpParser
     {
-        return (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        return (new ParserFactory())->createForNewestSupportedVersion();
     }
 
     private function getPhpTraverser(): NodeTraverser

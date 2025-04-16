@@ -35,31 +35,31 @@
         }
     ],
     "require": {
-        "php": "^7.2.20 || ^8.0",
-        "twig/twig": "^3.0",
-        "nikic/php-parser": "^4.10",
-        "symfony/console": "~3.4|~4.3|^5|^6",
-        "symfony/finder": "~3.4|~4.3|^5|^6",
-        "symfony/filesystem": "~3.4|~4.3|^5|^6",
-        "symfony/yaml": "~3.4|~4.3|^5|^6",
-        "symfony/process": "~3.4|~4.3|^5|^6",
+        "php": "^8.1",
+        "twig/twig": "^3.20",
+        "nikic/php-parser": "^5.4",
+        "symfony/console": "^6.4.3||^7.2.1",
+        "symfony/finder": "^6||^7",
+        "symfony/filesystem": "^6||^7",
+        "symfony/yaml": "^6||^7",
+        "symfony/process": "^6||^7",
         "phpdocumentor/reflection-docblock": "~5.3",
         "phpdocumentor/type-resolver": "1.6.*",
-        "wdes/php-i18n-l10n": "^4.0",
-        "code-lts/cli-tools": "^1.4.0",
-        "erusev/parsedown": "^1.7"
+        "wdes/php-i18n-l10n": "^4.1",
+        "code-lts/cli-tools": "^1.6",
+        "erusev/parsedown": "^1.7.4"
     },
     "scripts": {
-        "phpunit": "./vendor/bin/phpunit",
-        "phpstan": "./vendor/bin/phpstan analyse",
-        "phpcs": "./vendor/bin/phpcs",
-        "phpcbf": "./vendor/bin/phpcbf"
+        "phpunit": "@php ./vendor/bin/phpunit",
+        "phpstan": "@php ./vendor/bin/phpstan analyse",
+        "phpcs": "@php ./vendor/bin/phpcs",
+        "phpcbf": "@php ./vendor/bin/phpcbf"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7 || ^8 || ^9",
-        "phpstan/phpstan": "^1.4.6",
-        "wdes/coding-standard": "^3.3.1",
-        "phpstan/phpstan-phpunit": "^1"
+        "phpunit/phpunit": "^10 || ^11 || ^12",
+        "phpstan/phpstan": "^2.1.4",
+        "wdes/coding-standard": "^3.3.2",
+        "phpstan/phpstan-phpunit": "^2.0.4"
     },
     "autoload": {
         "psr-4": {
